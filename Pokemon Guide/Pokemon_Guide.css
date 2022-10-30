@@ -1,0 +1,27 @@
+body{
+  background-color:  rgb(241, 156, 156);
+}
+
+a{
+  text-align: center;
+  color:rgb(42, 77, 192);
+  font-weight: bold;
+  font-family: "Lucida Console", monospace;
+  font-size: 20px;
+}
+
+h1{
+  text-align: center;
+  color: black;
+  font-weight:bold;
+  font-family: "Lucida Console", monospace;
+}
+
+a:hover{
+  color:rgb(235, 77, 72);
+  text-decoration: none;
+}
+
+a:visited{
+  color:rgb(69, 16, 214);
+}

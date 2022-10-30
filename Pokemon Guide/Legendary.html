@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Catch A Legendary</title>
+
+<link rel="stylesheet" type = "text/css" href = "Legendary.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+
+<style>
+        
+    table {
+        font-family: "Lucida Console", monospace;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      td {
+        border: 2px solid #000000;
+        text-align: center;
+        padding: 8px;
+        font-size: 14px;
+      }
+      
+      th {
+          border: 2px solid #000000;
+          text-align: center;
+          padding: 8px;
+          font-size: 18px;
+      }
+
+</style>
+
+<h1 style="border:5px solid rgb(230, 20, 20);">Legendary Pokemons</h1>
+
+<!--"Uxie", "Mesprit", "Azelf", "Dialga", "Palkia", "Heatran", "Regigigas", "Giratina", "Cresselia"-->
+<table>
+    <tr>
+
+        <th>Uxie</th>
+        <th>Mesprit</th>
+        <th>Azelf</th>
+
+    </tr>
+
+    <td><img src="https://cdn.bulbagarden.net/upload/thumb/e/ef/480Uxie.png/1200px-480Uxie.png" width = "200" height = "200"></td>
+    
+    <td><img src="https://cdn.bulbagarden.net/upload/thumb/4/40/481Mesprit.png/250px-481Mesprit.png" width = "200" height = "200"></td>
+
+    <td><img src="https://cdn.bulbagarden.net/upload/thumb/d/d0/482Azelf.png/250px-482Azelf.png" width = "200" height = "200"></td>
+
+
+    <tr>
+
+        <th>Dialga</th>
+        <th>Palkia</th>
+        <th>Heatran</th>
+
+    </tr>
+
+    <td><img src="https://cdn.bulbagarden.net/upload/thumb/8/8a/483Dialga.png/1200px-483Dialga.png" width = "200" height = "200"></td>
+
+    
+    <td><img src="https://cdn.bulbagarden.net/upload/thumb/6/66/484Palkia.png/1200px-484Palkia.png" width = "200" height = "200"></td>
+
+
+    <td><img src="https://cdn.bulbagarden.net/upload/thumb/b/b7/485Heatran.png/1200px-485Heatran.png" width = "200" height = "200"></td>
+
+
+
+    <tr>
+
+        <th>Regigigas</th>
+        <th>Giratina</th>
+        <th>Cresselia</th>
+
+    </tr>
+
+    <td><img src="https://cdn.bulbagarden.net/upload/thumb/b/b7/485Heatran.png/1200px-485Heatran.png" width = "200" height = "200"></td>
+
+    
+    <td><img src="https://cdn.bulbagarden.net/upload/thumb/c/c5/487Giratina-Altered.png/1200px-487Giratina-Altered.png" width = "200" height = "200"></td>
+
+
+    <td><img src="https://cdn.bulbagarden.net/upload/thumb/4/4a/488Cresselia.png/1200px-488Cresselia.png" width = "200" height = "200"></td>
+
+</table>
+
+<br>
+<br>
+<br>
+
+<form>
+    Trainer Name: <input type="text" name="trainer" value = ""><input name="greet" value="Confirm" type=button onClick=greeting(this.form)>
+
+    </form>
+
+<p id = greet>
+
+</p>
+
+<h>Try to catch a Legendary Pokemon.</h>
+
+<p id = Legendary>
+
+</p>
+<form>
+    Find a random Legendary Pokemon<input name = "c" value = "Submit" type = button onClick = Legen()><br>
+</form>
+
+<form>
+    <input name = "cr" value = "Catch" type = button onClick = catchIt()>
+</form>
+
+<p id = cat>
+
+</p>
+<script>
+
+function catchIt(){
+    var rc = Math.floor((Math.random()*100));
+    if (rc%4 == 0){
+        document.getElementById("cat").innerHTML=("You successfully caught a Legendary!");
+    }
+    else {
+        document.getElementById("cat").innerHTML=(" It popped out of the Poke Ball.");
+        }
+}
+
+
+function greeting(na){
+  var n = na.trainer.value;
+  document.getElementById("greet").innerHTML=("Hello, trainer " + n + "!");
+}
+
+
+function Legen(){
+    var li = ["Uxie", "Mesprit", "Azelf", "Dialga", "Palkia", "Heatran", "Regigigas", "Giratina", "Cresselia"];
+    var r = Math.floor((Math.random()*9));
+    var pok = li[r];
+    document.getElementById("Legendary").innerHTML="A wild " + pok + " appeared!";
+}
+
+</script>
+
+</html>

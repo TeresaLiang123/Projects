@@ -1,0 +1,119 @@
+body{
+    background-color: rgb(228, 226, 226);
+  }
+
+  h1{
+    text-align: center;
+    color: black;
+    font-family: "Lucida Console", monospace;
+    font-weight:bold;
+    font-size: 50px;
+  }
+
+.Water {
+  text-align: center;
+  color: #0664ca;
+  font-family: "Lucida Console", monospace;
+}
+
+.Grass {
+  text-align: center;
+  color: #0fb53c;
+  font-family: "Lucida Console", monospace;
+}
+
+.Fire {
+  text-align: center;
+  color: #e35d00;
+  font-family: "Lucida Console", monospace;
+}
+
+.Normal {
+  text-align: center;
+  color: #ffdbb6;
+  font-family: "Lucida Console", monospace;
+}
+
+.Fighting {
+  text-align: center;
+  color: #dc4f0a;
+  font-family: "Lucida Console", monospace;
+}
+
+.Poison {
+  text-align: center;
+  color: #900094;
+  font-family: "Lucida Console", monospace;
+}
+
+.Flying {
+  text-align: center;
+  color: #898aec;
+  font-family: "Lucida Console", monospace;
+}
+
+.Ground {
+  text-align: center;
+  color: #b46400;
+  font-family: "Lucida Console", monospace;
+}
+
+.Rock {
+  text-align: center;
+  color: #723f00;
+  font-family: "Lucida Console", monospace;
+}
+
+.Bug {
+  text-align: center;
+  color: #c1c02a;
+  font-family: "Lucida Console", monospace;
+}
+
+.Ghost {
+  text-align: center;
+  color: #260084;
+  font-family: "Lucida Console", monospace;
+}
+
+.Steel {
+  text-align: center;
+  color: #bdbcd5;
+  font-family: "Lucida Console", monospace;
+}
+
+.Electric {
+  text-align: center;
+  color: #efd200;
+  font-family: "Lucida Console", monospace;
+}
+
+.Psychic {
+  text-align: center;
+  color: #ca00a6;
+  font-family: "Lucida Console", monospace;
+}
+
+.Dark {
+  text-align: center;
+  color: #2c2d31;
+  font-family: "Lucida Console", monospace;
+}
+
+.Ice {
+  text-align: center;
+  color: #00c0ff;
+  font-family: "Lucida Console", monospace;
+}
+
+.Dragon {
+  text-align: center;
+  color: #3100ff;
+  font-family: "Lucida Console", monospace;
+}
+
+.Fairy {
+  text-align: center;
+  color: #ee82ee;
+  font-family: "Lucida Console", monospace;
+}
