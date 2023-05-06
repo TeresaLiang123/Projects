@@ -1,0 +1,205 @@
+#!/usr/bin/env python3
+
+import argparse
+import socket
+import ssl
+import html
+import html.parser
+from html.parser import HTMLParser
+
+DEFAULT_SERVER = "proj5.3700.network"
+DEFAULT_PORT = 443
+
+class MyHTMLParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.csrf_middleware = None
+        self.links = []
+        self.flags = []
+        self.is_existing_flag = False
+        
+        
+    def handle_starttag(self, tag, attrs):
+        if tag == "input" and ("type", "hidden") in attrs and ("name", "csrfmiddlewaretoken") in attrs:
+            self.csrf_middleware = attrs[2][1]
+        elif tag == "a" and "href" in attrs[0][0] and "/fakebook/" in attrs[0][1]:
+            self.links.append(attrs[0][1])
+        elif tag == "h2" and ("class", "secret_flag") in attrs:
+            self.is_existing_flag = True # to get data/flag
+    
+    def handle_data(self, data):
+        if self.is_existing_flag:
+            if data not in self.flags:
+                flag = data.replace("FLAG: ", "")
+                self.flags.append(flag)
+                self.is_existing_flag = False
+    
+
+class Crawler:
+    def __init__(self, args):
+        self.server = args.server
+        self.port = args.port
+        self.username = args.username
+        self.password = args.password
+        
+        self.csrf = None
+        self.sessionid = None
+        self.csrfmiddleware = None
+        self.chunks = []
+        
+        self.links = []
+        self.visited = []
+        self.flags = []
+
+    def run(self):
+        self.post()
+        # get html
+        self.handleResponse("")
+        self.links = self.get_links()
+        self.crawl()
+        for flag in self.flags:
+            print(flag)
+
+    # crawls over the website to find flags
+    def crawl(self):
+        for link in self.links:
+            if link not in self.visited:
+                self.visited.append(link)
+                self.get(link)
+                self.handleResponse(link)
+                if len(self.flags) == 5:
+                    break
+                
+    # what to do depending on type of responses
+    def handleResponse (self, link):
+        status = self.chunks[0]
+        if "200 OK" in status:
+            html = self.chunks[-1]
+            parser = MyHTMLParser()
+            parser.feed(html)
+            for flag in self.get_flags():
+                self.flags.append(flag)
+            #print(self.flags)
+            for link in self.get_links():
+                self.links.append(link)
+        elif "302 Found" in status:
+            location = self.info("Location: ")
+            self.get(location)
+        elif "403 Found" in status or "404 Not Found" in status:
+            pass
+        elif "503 Service Unavailable" in status:
+            self.handleResponse(link)
+            
+    # gathers all the flags in the current page or html
+    def get_flags(self):
+        html = self.chunks[-1]
+        parser = MyHTMLParser()
+        parser.feed(html)
+        
+        f = []
+        for flag in parser.flags:
+            if flag not in self.flags:
+                f.append(flag)
+        return f
+        
+    # gets all cookies, the id and token
+    def get_cookies(self):
+        if self.info("csrftoken=") != None :
+            self.csrf = self.info("csrftoken=")
+        if self.info("sessionid=") != None :
+            self.sessionid = self.info("sessionid=")
+        self.csrfmiddleware = self.get_middleware()
+
+    # gathers info depending on what type of info is needed (info like cookie or location)
+    def info(self, info_type):
+        data = ""
+        for chunk in self.chunks:
+            if info_type in chunk:
+                start = chunk.find(info_type) # index
+                if info_type == "Location: ":
+                    data = chunk.replace(info_type, "")
+                else:
+                    end = chunk.find(';')
+                    data = chunk[start: end]
+                    data = data.replace(info_type, "")
+                return data
+
+    # gets the csrf middleware
+    def get_middleware(self):
+        html = self.chunks[-1]
+        parser = MyHTMLParser()
+        parser.feed(html)
+        return parser.csrf_middleware
+    
+    # get links to traverse through website
+    def get_links(self):
+        html = self.chunks[-1]
+        parser = MyHTMLParser()
+        parser.feed(html)
+        
+        return parser.links
+                
+    # sends requests
+    def send(self, request):
+        context = ssl.create_default_context()
+        
+        with socket.create_connection((self.server, self.port)) as sock:
+            with context.wrap_socket(sock, server_hostname=self.server) as ssock:
+                ssock.send(request.encode('ascii'))
+                received_data = ""
+                while True:
+                    data = ssock.recv(1000).decode('ascii')
+                    if not data:
+                        break
+                    else:
+                        received_data += data
+                        
+                #print("Response:\n%s" % received_data)
+                self.chunks = received_data.split("\r\n")
+                # get cookies
+                self.get_cookies()
+                return received_data
+    
+    # sends GET request
+    def get(self, path):
+        # send GET request
+        header = f"GET {path} HTTP/1.1\r\n"
+        host = f"Host: {self.server}\r\n" 
+        connection = f"Connection: close\r\n"
+        cookie = f"Cookie: csrftoken={self.csrf}; sessionid={self.sessionid}\r\n"
+        request = f"{header}{host}{connection}{cookie}\r\n\r\n"
+        data = self.send(request)
+        
+        return data
+    
+    # sends POST request
+    def post(self):
+        
+        # cookies from homepage
+        self.get("/accounts/login/?next=/fakebook/")
+        
+        path = "/accounts/login/"
+        content_type = "application/x-www-form-urlencoded"
+        Post = f"POST {path} HTTP/1.1\r\n"
+        host = f"Host: {self.server}\r\n"
+        content_type = f"Content-Type: {content_type}\r\n"
+        cookie = f"Cookie: csrftoken={self.csrf}; sessionid={self.sessionid}\r\n"
+        connection = f"Connection: close\r\n\r\n"
+        user_info =f"username={self.username}&password={self.password}&csrfmiddlewaretoken={self.csrfmiddleware}&next=%2Ffakebook%2F"
+        user_info_len = len(user_info)
+        content_length = f"Content-Length: {user_info_len}\r\n"
+        request = f"{Post}{host}{content_type}{content_length}{cookie}{connection}{user_info}"
+        
+        response = self.send(request)
+        return response
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='crawl Fakebook')
+    parser.add_argument('-s', dest="server", type=str, default=DEFAULT_SERVER, help="The server to crawl")
+    parser.add_argument('-p', dest="port", type=int, default=DEFAULT_PORT, help="The port to use")
+    parser.add_argument('username', type=str, help="The username to use")
+    parser.add_argument('password', type=str, help="The password to use")
+    args = parser.parse_args()
+    sender = Crawler(args)
+    sender.run()
