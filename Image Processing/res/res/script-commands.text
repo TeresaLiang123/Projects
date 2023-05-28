@@ -1,0 +1,33 @@
+load MJ-ppm res/michael-jordan.ppm
+load MJ-jpg res/michael-jordan.jpg
+red-component MJ-ppm MJ-ppm-red
+red-component MJ-jpg MJ-jpg-red
+green-component MJ-ppm MJ-ppm-green
+green-component MJ-jpg MJ-jpg-green
+blue-component MJ-ppm MJ-ppm-blue
+blue-component MJ-jpg MJ-jpg-blue
+value-component MJ-ppm MJ-ppm-value
+value-component MJ-jpg MJ-jpg-value
+intensity-component MJ-ppm MJ-ppm-intensity
+intensity-component MJ-jpg MJ-jpg-intensity
+luma-component MJ-ppm MJ-ppm-luma
+luma-component MJ-jpg MJ-jpg-luma
+horizontal-flip MJ-ppm MJ-ppm-horizontal
+horizontal-flip MJ-jpg MJ-jpg-horizontal
+vertical-flip MJ-ppm MJ-ppm-veritcal
+vertical-flip MJ-jpg MJ-jpg-veritcal
+brighten MJ-ppm MJ-ppm-brighten 50
+brighten MJ-ppm MJ-ppm-darken 50
+brighten MJ-jpg MJ-jpg-brighten 50
+brighten MJ-jpg MJ-jpg-darken 50
+blur MJ-ppm MJ-ppm-blur
+blur MJ-jpg MJ-jpg-blur
+sharpen MJ-ppm MJ-ppm-sharpen
+sharpen MJ-jpg MJ-jpg-sharpen
+greyscale MJ-ppm MJ-ppm-greyscale
+greyscale MJ-jpg MJ-jpg-greyscale
+sepiaTone MJ-ppm MJ-ppm-sepiaTone
+sepiaTone MJ-jpg MJ-jpg-sepiaTone
+save MJ-ppm-sepiaTone res/mj-ppm-sepia.ppm
+save MJ-jpg-sepiaTone res/mj-jpg-sepia.jpg
+quit
